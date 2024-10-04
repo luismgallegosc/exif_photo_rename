@@ -20,18 +20,8 @@ def rename_photo_files(directory):
                 print(f"    Error loading EXIF data for {filename}")
                 continue
 
-            exif_datetime = str(exif_data['Exif'][36867])[2:-1]
-            exif_datetime = exif_datetime.replace(" ", "_").replace(":","")
-            # print(exif_datetime)
-
-            exif_model = str(exif_data['0th'][272])[2:-1]
-            if exif_model.lower() == 'Canon EOS REBEL T2i'.lower():
-                exif_model = 'canont2i'
-            else:
-                exif_model = exif_model.lower().replace(" ", "")
-            # print(exif_model)
-
-            filename_new = f"{exif_datetime}_{exif_model}.cr2"
+            filename_new_base = get_new_name(exif_data)
+            filename_new = filename_new_base + '.cr2'
 
             filepath_new = os.path.join(directory, filename_new)
 
@@ -50,7 +40,7 @@ def rename_photo_files(directory):
             if os.path.exists(filepath_xmp):
                 print(f"    XMP file found: {filename_xmp}")
 
-                filename_xmp_new = f"{exif_datetime}_{exif_model}.xmp"
+                filename_xmp_new = f"{filename_new_base}.xmp"
                 filepath_xmp_new = os.path.join(directory, filename_xmp_new)
 
                 if os.path.exists(filepath_xmp_new):
@@ -68,7 +58,7 @@ def rename_photo_files(directory):
             if os.path.exists(filepath_jpg):
                 print(f"    JPG file found: {filename_jpg}")
 
-                filename_jpg_new = f"{exif_datetime}_{exif_model}.jpg"
+                filename_jpg_new = f"{filename_new_base}.jpg"
                 filepath_jpg_new = os.path.join(directory, filename_jpg_new)
 
                 if os.path.exists(filepath_jpg_new):
@@ -78,6 +68,22 @@ def rename_photo_files(directory):
                 os.rename(filepath_jpg, filepath_jpg_new)
                 log_filename_change(directory, filename_jpg, filename_jpg_new)
                 print(f"    Renamed {filename_jpg} to {filename_jpg_new}")
+
+def get_new_name(exif_data):
+    exif_datetime = str(exif_data['Exif'][36867])[2:-1]
+    exif_datetime = exif_datetime.replace(" ", "_").replace(":","")
+    # print(exif_datetime)
+
+    exif_model = str(exif_data['0th'][272])[2:-1]
+    if exif_model.lower() == 'Canon EOS REBEL T2i'.lower():
+        exif_model = 'canont2i'
+    else:
+        exif_model = exif_model.lower().replace(" ", "")
+    # print(exif_model)
+
+    new_file_name = f"{exif_datetime}_{exif_model}"
+
+    return new_file_name
 
 def log_filename_change(directory, original_name, new_name):
     change_log_filename = 'name_change.log'

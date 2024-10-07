@@ -10,6 +10,9 @@ def rename_photo_files(directory):
 
     for filename in os.listdir(directory):
         if filename.lower().endswith(('.cr2')):
+            name_original = filename[:-4].lower()
+            extension     = filename[-4:].lower()
+
             filepath = os.path.join(directory, filename)
 
             print(f"\nProcessing file: {filename}")
@@ -34,40 +37,11 @@ def rename_photo_files(directory):
             print(f"    Renamed {filename} to {filename_new}")
 
             # check if xmp file exists, rename if it does
-            filename_xmp = filename.split('.')[0] + ".XMP"
-            filepath_xmp = os.path.join(directory, filename_xmp)
-
-            if os.path.exists(filepath_xmp):
-                print(f"    XMP file found: {filename_xmp}")
-
-                filename_xmp_new = f"{filename_new_base}.xmp"
-                filepath_xmp_new = os.path.join(directory, filename_xmp_new)
-
-                if os.path.exists(filepath_xmp_new):
-                    print(f"    XMP file already exists: {filename_xmp_new}")
-                    continue
-
-                os.rename(filepath_xmp, filepath_xmp_new)
-                log_filename_change(directory, filename_xmp, filename_xmp_new)
-                print(f"    Renamed {filename_xmp} to {filename_xmp_new}")
+            rename_file(directory, name_original, filename_name_new, 'xmp')
 
             # check if photo has been exported to jpg or tiff, rename if it has
-            filename_jpg = filename.split('.')[0] + ".JPG"
-            filepath_jpg = os.path.join(directory, filename_jpg)
-
-            if os.path.exists(filepath_jpg):
-                print(f"    JPG file found: {filename_jpg}")
-
-                filename_jpg_new = f"{filename_new_base}.jpg"
-                filepath_jpg_new = os.path.join(directory, filename_jpg_new)
-
-                if os.path.exists(filepath_jpg_new):
-                    print(f"    JPG file already exists: {filename_jpg_new}")
-                    continue
-
-                os.rename(filepath_jpg, filepath_jpg_new)
-                log_filename_change(directory, filename_jpg, filename_jpg_new)
-                print(f"    Renamed {filename_jpg} to {filename_jpg_new}")
+            rename_file(directory, name_original, filename_name_new, 'jpg')
+            rename_file(directory, name_original, filename_name_new, 'tiff')
 
 def get_new_name(exif_data):
     exif_datetime = str(exif_data['Exif'][36867])[2:-1]
@@ -88,6 +62,24 @@ def get_new_name(exif_data):
     new_file_name = f"{exif_datetime}_{exif_model}"
 
     return new_file_name
+
+def rename_file(directory, name_original, name_new, extension):
+    file_original = f"{name_original}.{extension}"
+    path_original = os.path.join(directory, file_original)
+
+    if os.path.exists(path_original):
+        print(f"    {extension} file found: {file_original}")
+
+        file_new = f"{name_new}.{extension}"
+        path_new = os.path.join(directory, file_new)
+
+        if os.path.exists(path_new):
+            print(f"    New {extension} file already exists: {file_new}")
+            return
+
+        os.rename(path_original, path_new)
+        log_filename_change(directory, file_original, file_new)
+        print(f"    Renamed {file_original} to {file_new}")
 
 def log_filename_change(directory, original_name, new_name):
     change_log_filename = 'name_change.log'

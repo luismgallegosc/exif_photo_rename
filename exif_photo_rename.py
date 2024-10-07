@@ -13,12 +13,10 @@ def rename_photo_files(directory):
             name_original = filename[:-4].lower()
             extension     = filename[-3:].lower()
 
-            filepath = os.path.join(directory, filename)
-
             print(f"\nProcessing file: {filename}")
 
             try:
-                exif_data = piexif.load(filepath)
+                exif_data = piexif.load(os.path.join(directory, filename))
             except (piexif.InvalidImageDataError, KeyError):
                 print(f"    Error loading EXIF data for {filename}")
                 continue

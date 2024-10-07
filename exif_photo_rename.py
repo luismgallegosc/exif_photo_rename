@@ -77,6 +77,10 @@ def get_new_name(exif_data):
     exif_model = str(exif_data['0th'][272])[2:-1]
     if exif_model.lower() == 'Canon EOS REBEL T2i'.lower():
         exif_model = 'canont2i'
+    elif exif_model.lower() == 'Canon EOS R6'.lower():
+        exif_model = 'canonr6'
+    elif exif_model.lower() == 'Galaxy S23'.lower():
+        exif_model = 'galaxys23'
     else:
         exif_model = exif_model.lower().replace(" ", "")
     # print(exif_model)

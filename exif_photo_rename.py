@@ -13,12 +13,10 @@ def rename_photo_files(directory):
             name_original = filename[:-4].lower()
             extension     = filename[-3:].lower()
 
-            print(f"\nProcessing file: {filename}")
-
             try:
                 exif_data = piexif.load(os.path.join(directory, filename))
             except (piexif.InvalidImageDataError, KeyError):
-                print(f"    Error loading EXIF data for {filename}")
+                print(f"Error loading EXIF data for {filename}")
                 continue
 
             name_new = get_new_name(exif_data)
@@ -58,18 +56,16 @@ def rename_file(directory, name_original, name_new, extension):
     path_original = os.path.join(directory, file_original)
 
     if os.path.exists(path_original):
-        print(f"    {extension} file found: {file_original}")
-
         file_new = f"{name_new}.{extension}"
         path_new = os.path.join(directory, file_new)
 
         if os.path.exists(path_new):
-            print(f"    New {extension} file already exists: {file_new}")
+            print(f"New {extension} file for {file_original} already exists: {file_new}")
             return
 
         os.rename(path_original, path_new)
         log_filename_change(directory, file_original, file_new)
-        print(f"    Renamed {file_original} to {file_new}")
+        print(f"Renamed {file_original} to {file_new}")
 
 def log_filename_change(directory, original_name, new_name):
     change_log_filename = 'name_change.log'

@@ -23,17 +23,17 @@ def rename_photo_files(directory):
                 print(f"    Error loading EXIF data for {filename}")
                 continue
 
-            filename_name_new = get_new_name(exif_data)
+            name_new = get_new_name(exif_data)
 
             # rename raw photo files
-            rename_file(directory, name_original, filename_name_new, extension)
+            rename_file(directory, name_original, name_new, extension)
 
             # check if xmp file exists, rename if it does
-            rename_file(directory, name_original, filename_name_new, 'xmp')
+            rename_file(directory, name_original, name_new, 'xmp')
 
             # check if photo has been exported to jpg or tiff, rename if it has
-            rename_file(directory, name_original, filename_name_new, 'jpg')
-            rename_file(directory, name_original, filename_name_new, 'tiff')
+            rename_file(directory, name_original, name_new, 'jpg')
+            rename_file(directory, name_original, name_new, 'tiff')
 
 def get_new_name(exif_data):
     exif_datetime = str(exif_data['Exif'][36867])[2:-1]

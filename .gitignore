@@ -1,6 +1,7 @@
 *.cr2
 *.xmp
 *.jpg
+*.tif*
 *.bat
 *.7z
 *.txt

@@ -11,7 +11,7 @@ def rename_photo_files(directory):
     for filename in os.listdir(directory):
         if filename.lower().endswith(('.cr2')):
             name_original = filename[:-4].lower()
-            extension     = filename[-4:].lower()
+            extension     = filename[-3:].lower()
 
             filepath = os.path.join(directory, filename)
 

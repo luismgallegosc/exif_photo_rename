@@ -23,8 +23,8 @@ def rename_photo_files(directory):
                 print(f"    Error loading EXIF data for {filename}")
                 continue
 
-            filename_new_base = get_new_name(exif_data)
-            filename_new = filename_new_base + '.cr2'
+            filename_name_new = get_new_name(exif_data)
+            filename_new = filename_name_new + '.cr2'
 
             filepath_new = os.path.join(directory, filename_new)
 

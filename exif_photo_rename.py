@@ -24,17 +24,9 @@ def rename_photo_files(directory):
                 continue
 
             filename_name_new = get_new_name(exif_data)
-            filename_new = filename_name_new + '.cr2'
 
-            filepath_new = os.path.join(directory, filename_new)
-
-            if os.path.exists(filepath_new):
-                print(f"    File already exists: {filename_new}")
-                continue
-
-            os.rename(filepath, filepath_new)
-            log_filename_change(directory, filename, filename_new)
-            print(f"    Renamed {filename} to {filename_new}")
+            # rename raw photo files
+            rename_file(directory, name_original, filename_name_new, extension)
 
             # check if xmp file exists, rename if it does
             rename_file(directory, name_original, filename_name_new, 'xmp')

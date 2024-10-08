@@ -59,9 +59,15 @@ def rename_file(directory, name_original, name_new, extension):
         file_new = f"{name_new}.{extension}"
         path_new = os.path.join(directory, file_new)
 
-        if os.path.exists(path_new):
-            print(f"New {extension} file for {file_original} already exists: {file_new}")
-            return
+        rename_retry_count = 0
+        while True:
+            if os.path.exists(path_new):
+                print(f"New file name {file_new} for {file_original} already exists")
+                rename_retry_count = rename_retry_count + 1
+                file_new = f"{name_new}_{str(rename_retry_count).zfill(2)}.{extension}"
+                path_new = os.path.join(directory, file_new)
+            else:
+                break
 
         os.rename(path_original, path_new)
         log_filename_change(directory, file_original, file_new)

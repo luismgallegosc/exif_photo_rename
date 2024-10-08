@@ -44,7 +44,9 @@ def get_new_name(exif_data):
     elif exif_model.lower() == 'Galaxy S23'.lower():
         exif_model = 'galaxys23'
     else:
-        exif_model = exif_model.lower().replace(" ", "")
+        exif_model = exif_model.lower()
+        exif_model = exif_model.replace(" ", "")
+        exif_model = exif_model.replace("-", "")
     # print(exif_model)
 
     new_file_name = f"{exif_datetime}_{exif_model}"

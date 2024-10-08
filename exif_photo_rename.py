@@ -25,7 +25,7 @@ def rename_photo_files(directory):
             rename_file(directory, name_original, name_new, extension)
 
             # check if xmp file exists, rename if it does
-            rename_file(directory, name_original, name_new, 'xmp')
+            rename_file(directory, name_original, name_new, f'{extension}.xmp')
 
             # check if photo has been exported to jpg or tiff, rename if it has
             rename_file(directory, name_original, name_new, 'jpg')

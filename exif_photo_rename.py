@@ -33,7 +33,8 @@ def rename_photo_files(directory):
 
 def get_new_name(exif_data):
     exif_datetime = str(exif_data['Exif'][36867])[2:-1]
-    exif_datetime = exif_datetime.replace(" ", "_").replace(":","")
+    exif_datetime = exif_datetime.replace(" ", "_")
+    exif_datetime = exif_datetime.replace(":","")
 
     exif_model = str(exif_data['0th'][272])[2:-1]
     if exif_model.lower() == 'Canon EOS REBEL T2i'.lower():
